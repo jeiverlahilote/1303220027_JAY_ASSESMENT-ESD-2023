@@ -1,0 +1,42 @@
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+struct Menu {
+    string nama, tipe;
+    double harga;
+};
+
+struct Pesanan {
+    const Menu& menu;  // Menggunakan referensi konstan ke Menu
+    int jumlah;
+};
+
+double hitungBiayaPesanan(const Pesanan& pesanan) {
+    double pajak = (pesanan.menu.tipe == "Makanan") ? 0.05 : (pesanan.menu.tipe == "Minuman") ? 0.03 : 0;
+    return (pesanan.menu.harga * (1 + pajak) * pesanan.jumlah * 1.15);  // termasuk pajak transaksi
+}
+
+int main() {
+    vector<Menu> daftarMenu = {
+        {"Ayam Goreng Krispi", "Makanan", 15000},
+        {"Ayam Puk Puk", "Makanan", 13000},
+        {"Ayam Bakar", "Makanan", 20000},
+        {"Es Teh", "Minuman", 5000},
+        {"Es Jeruk", "Minuman", 7000}
+    };
+
+    Pesanan pesanan[] = {
+        {daftarMenu[2], 2},  // Rehan
+        {daftarMenu[1], 1},  // Amba
+        {daftarMenu[0], 1},  // Faiz 1
+        {daftarMenu[3], 1}   // Faiz 2
+    };
+
+    for (const auto& p : pesanan) {
+        cout << "Biaya " << p.menu.nama << ": " << hitungBiayaPesanan(p) << " Rupiah" << endl;
+    }
+
+    return 0;
+}
